@@ -1,32 +1,32 @@
 from datetime import datetime
 import dateparser
+from dateparser.search import search_dates
 
 
 def parse(text: str, settings: dict = None, *, fallback_now=False, debug=False) -> datetime:
     """
-    Convert a natural language date string into a datetime object.
+    Parse human-readable date strings into datetime objects.
 
     Parameters:
-    - text (str): A human-readable date string like "tomorrow", "next Friday", etc.
-    - settings (dict): Optional dictionary to override default dateparser settings.
-    - fallback_now (bool): If True, return current datetime when parsing fails.
-    - debug (bool): If True, print debug info.
+        text (str): The natural language date input.
+        settings (dict): Optional dateparser settings.
+        fallback_now (bool): Return datetime.now() if parsing fails.
+        debug (bool): Print debug info.
 
     Returns:
-    - datetime object if successful, else None or current datetime
+        datetime or None
     """
     if not isinstance(text, str) or not text.strip():
         if debug:
-            print("[DEBUG] Invalid input.")
+            print("[DEBUG] Invalid input")
         return datetime.now() if fallback_now else None
 
     text = text.strip()
 
     default_settings = {
         'PREFER_DATES_FROM': 'future',
-        'RELATIVE_BASE': datetime.now(),
         'RETURN_AS_TIMEZONE_AWARE': False,
-        'PARSERS': ['relative-time', 'absolute-time', 'custom-formats'],
+        'RELATIVE_BASE': datetime.now(),
         'STRICT_PARSING': False,
     }
 
@@ -38,7 +38,15 @@ def parse(text: str, settings: dict = None, *, fallback_now=False, debug=False) 
 
     result = dateparser.parse(text, settings=default_settings)
 
+    # Fallback: Try fuzzy match using search_dates
+    if result is None:
+        search_result = search_dates(text, settings=default_settings)
+        if search_result:
+            if debug:
+                print(f"[DEBUG] Fallback search_dates() success: {search_result}")
+            result = search_result[0][1]
+
     if debug and result is None:
-        print("[DEBUG] Parsing failed.")
+        print(f"[DEBUG] Failed to parse: '{text}'")
 
     return result or (datetime.now() if fallback_now else None)
