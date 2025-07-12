@@ -5,10 +5,10 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='human-date-parser',
-    version='0.1.1',  # <-- also bump the version to publish again
+    version='0.1.2',  # <-- also bump the version to publish again
     packages=find_packages(),
     install_requires=[
-        'dateparser>=1.1.2'
+        'dateparser>=1.1.0'
     ],
     author='Dheerendra Vikram Dixit',
     author_email='dheerendradixit321@gmail.com',
