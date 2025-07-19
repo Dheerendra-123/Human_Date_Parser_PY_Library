@@ -33,7 +33,7 @@ The primary function of the library is `parse()`, which takes a string represent
 Let's explore how to use `parse()` with various natural language inputs.
 
 ```python
-from human_date_parser import parse_date
+from human_date_parser import parse
 import datetime
 
 # For consistent examples, we'll assume the current date is July 12, 2025.
