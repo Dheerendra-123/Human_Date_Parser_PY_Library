@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='human-date-parser',
-    version='0.1.2',  # <-- also bump the version to publish again
+    version='0.1.3',  # <-- also bump the version to publish again
     packages=find_packages(),
     install_requires=[
         'dateparser>=1.1.0'
